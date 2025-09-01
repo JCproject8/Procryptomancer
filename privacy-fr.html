@@ -1,0 +1,41 @@
+<div id="lang-switch" style="position:fixed;top:10px;right:10px;z-index:9999;">
+  <button onclick="setLang('fr')">FR</button>
+  <button onclick="setLang('en')">EN</button>
+</div>
+
+<script>
+  const texts = {
+    fr: {
+      title: "Votre confidentialité compte",
+      msg: "Nous utilisons des données anonymisées (IP pseudonymisée, pages visitées...) uniquement pour améliorer la qualité.",
+      accept: "Accepter",
+      decline: "Refuser",
+      more: "Politique de confidentialité"
+    },
+    en: {
+      title: "Your privacy matters",
+      msg: "We use anonymized data (hashed IP, page visits...) only to improve service quality.",
+      accept: "Accept",
+      decline: "Decline",
+      more: "Privacy policy"
+    }
+  };
+
+  function setLang(lang) {
+    localStorage.setItem("pcm_lang", lang);
+    applyLang(lang);
+  }
+
+  function applyLang(lang) {
+    const t = texts[lang] || texts.fr;
+    document.querySelector(".pcm-consent .title").innerText = t.title;
+    document.querySelector(".pcm-consent .txt").innerHTML =
+      t.msg + ' <a href="/privacy-' + lang + '.html">' + t.more + '</a>';
+    document.getElementById("pcm-accept").innerText = t.accept;
+    document.getElementById("pcm-decline").innerText = t.decline;
+  }
+
+  // Charger langue choisie
+  const savedLang = localStorage.getItem("pcm_lang") || navigator.language.slice(0,2);
+  applyLang(savedLang === "en" ? "en" : "fr");
+</script>
